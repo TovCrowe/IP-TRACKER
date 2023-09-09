@@ -21,7 +21,8 @@ function App() {
   const [domain, setDomain] = useState({});
   const [address, setAddress] = useState(null);
   const [error, setError] = useState(false);
-
+ 
+  console.log(domain)
   return (
     <>
     <div className="relative h-screen">

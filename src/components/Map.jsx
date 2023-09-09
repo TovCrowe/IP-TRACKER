@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 function Map({ domain }) {
+  // Obtener la referencia al mapa
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -13,33 +14,32 @@ function Map({ domain }) {
 
       // Actualizar la posición del marcador
       const newPosition = [domain.location.lat, domain.location.lng];
-      map.setView(newPosition, map.getZoom());
-
-      // Actualizar la posición del marcador (si es necesario)
-      map.eachLayer((layer) => {
-        if (layer instanceof Marker) {
-          layer.setLatLng(newPosition);
-        }
-      });
+      const currentZoom = map.getZoom();
+      
+      // Centrar el mapa en la nueva posición y mantener el nivel de zoom actual
+      map.setView(newPosition, currentZoom);
     }
-  }, [domain]); 
-  
-  if(!domain || !domain.ip || !domain.location){
+  }, [domain]);
+
+  if (!domain || !domain.ip || !domain.location) {
     return null;
   }
 
+  // Generar una clave única basada en la ubicación del dominio
+  const mapKey = `${domain.location.lat}-${domain.location.lng}`;
+
   return (
-      <MapContainer center={[domain.location.lat, domain.location.lng]} zoom={16} scrollWheelZoom={false} className='w-full  h-screen'>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={[domain.location.lat, domain.location.lng]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
-      </MapContainer>
+    <MapContainer key={mapKey} ref={mapRef} center={[domain.location.lat, domain.location.lng]} zoom={15} scrollWheelZoom={false} className='w-full  h-screen'>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <Marker position={[domain.location.lat, domain.location.lng]}>
+        <Popup>
+          A pretty CSS3 popup. <br /> Easily customizable.
+        </Popup>
+      </Marker>
+    </MapContainer>
   );
 }
 

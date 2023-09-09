@@ -25,7 +25,7 @@ function Result({domain}) {
   }
 
   return (
-    <StyledDiv className="bg-gray-100 flex justify-evenly p-7 rounded-xl sm:flex-row">
+    <StyledDiv className="bg-gray-100 shadow-lg flex justify-evenly p-7 rounded-xl sm:flex-row">
     <div>
       <h3 className='text-gray-400'>IP ADDRESS</h3>
       <p>{domain.ip}</p>
