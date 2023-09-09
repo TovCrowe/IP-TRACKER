@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import iconLocation from '../assets/icon-location.svg';
 
 function Map({ domain }) {
   // Obtener la referencia al mapa
@@ -28,13 +29,17 @@ function Map({ domain }) {
   // Generar una clave única basada en la ubicación del dominio
   const mapKey = `${domain.location.lat}-${domain.location.lng}`;
 
+  const customIcon = L.icon({
+    iconUrl: iconLocation,
+    iconSize: [32, 32], // Tamaño del ícono (ajusta según tus necesidades)
+  });
   return (
     <MapContainer key={mapKey} ref={mapRef} center={[domain.location.lat, domain.location.lng]} zoom={15} scrollWheelZoom={false} className='w-full  h-screen'>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[domain.location.lat, domain.location.lng]}>
+      <Marker position={[domain.location.lat, domain.location.lng]} icon={customIcon}>
         <Popup>
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
